@@ -1,0 +1,97 @@
+
+#Import packages 
+#Install with :  pip install packagename
+
+import os
+from datetime import datetime
+import mysql.connector as mdb
+from dbfread import DBF
+import time
+ 
+
+filename= "Your file name" # the file that i used you can find it in the same respiratory
+
+ 
+
+#Connection with MariaDB, here you have to insert your username + pw like heidisql client
+ased = mdb.connect(user='***', passwd='****', db="******", host='****', port=****, allow_local_infile=True)
+
+cursor = ased.cursor()
+cursor.execute("SET GLOBAL max_allowed_packet=1073741824;")
+ased.commit()
+
+
+
+ 
+table = DBF(filename, encoding='iso-8859-1', load=True)
+ 
+
+
+# loop converts .dbf file into .txt file for db import
+outfile = open('load2.txt', 'w')
+count = 0
+for i in range(90,2666):
+    opt = table.records[i]['PROFILE_13'],  # Test, ob Daten geeignet sind
+    if opt[0] != "Tension N1211 [N]" and opt[0] != "":
+ 
+        var1 = table.records[i]['PROFILE_01'],
+
+        now = datetime.strptime(var1[0], '%d. %b %Y %H:%M:%S'),
+        var2 = float(table.records[i]['PROFILE_02']),
+        var3 = float(table.records[i]['PROFILE_03']),
+        var4 = float(table.records[i]['PROFILE_04']),
+        var5 = float(table.records[i]['PROFILE_05']),
+        var6 = float(table.records[i]['PROFILE_06']),
+        var7 = float(table.records[i]['PROFILE_07']),
+        var8 = float(table.records[i]['PROFILE_08']),
+        var9 = float(table.records[i]['PROFILE_09']),
+        var10 = float(table.records[i]['PROFILE_10']),
+        var11 = float(table.records[i]['PROFILE_11']),
+        var12 = float(table.records[i]['PROFILE_12']),
+        var13 = float(table.records[i]['PROFILE_13']),
+        var14 = float(table.records[i]['PROFILE_14']),
+        var15 = float(table.records[i]['PROFILE_15']),
+        var16 = float(table.records[i]['PROFILE_19']),
+        var17 = float(table.records[i]['PROFILE_20']),
+        var18 = float(table.records[i]['PROFILE_21']),
+        var19 = float(table.records[i]['PROFILE_22']),
+        var20 = float(table.records[i]['PROFILE_23']),
+        var21 = float(table.records[i]['PROFILE_24']),
+        var22 = float(table.records[i]['PROFILE_26']),
+        count = count + 1
+        outfile.write(
+            '%i\t%s\t%.3f\t%.3f\t%.2f\t%.3f\t%.2f\t%.2f\t%.2f\t%.2f\t%.2f\t%.2f\t%.2f\t%.2f\t%.2f\t%.2f\t%.2f\t%.2f\t%.2f\t%.2f\t%.2f\t%.2f\t%.2f\n' % (
+                count, now[0], var2[0], var3[0], var4[0], var5[0], var6[0], var7[0],
+                var8[0], var9[0],
+                var10[0], var11[0], var12[0], var13[0], var14[0], var15[0], var16[0],
+                var17[0],
+                var18[0], var19[0], var20[0], var21[0], var22[0]))
+
+
+# Create Table in DB    
+#sql = "CREATE TABLE IF NOT EXISTS %s (id INT NOT NULL AUTO_INCREMENT, Zeit DATETIME,FeedPosRel DOUBLE, FeedSpeed DOUBLE, WireSpeed DOUBLE, PowerMainDrive DOUBLE, Move_Bear1_B1771 DOUBLE, Fix_Bear1_B1773 DOUBLE, Move_Bear2_B1775 DOUBLE, Fix_Bear2_B1777 DOUBLE, Slurry_B1655 DOUBLE, Valve_State_Y1751 DOUBLE, Cool_Water_B1657 DOUBLE, Tension_N1211 DOUBLE, Tension_N1311 DOUBLE, Slurry_Flow_M1511 DOUBLE, Slurry_Visc DOUBLE, MDTorque DOUBLE, FedTorque DOUBLE, Comp_Torque DOUBLE, Comp_Angle DOUBLE, Comp_Speed DOUBLE, SlurryTempOut_B1653 DOUBLE, PRIMARY KEY (id))"
+#sql = sql.replace("%s", "0_Maschinendaten_test")
+#cursor.execute(sql)
+#ased.commit()
+
+
+# Import datafile load2.txt in DB
+#sql = "LOAD DATA LOCAL INFILE 'load2.txt' INTO TABLE %s"
+#sql = sql.replace("%s", "0_Maschinendaten_test"  )
+ 
+#cursor.execute(sql)
+#ased.commit()
+
+outfile.close()
+os.remove("load2.txt")
+
+
+
+# you can use this command for your fake live script
+time.sleep(0.2)
+
+
+
+# Close connection
+ased.close()
+
