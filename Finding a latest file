@@ -1,5 +1,0 @@
-import glob
-
-files = glob.glob("D:\Fraunhofer CSP\How to\CSP-20210623T205859Z-001\CSP/**/protocol/*.DBF") # add your path
-dbf_table_pth = max(files, key=os.path.getctime)  # latest file
-print(dbf_table_pth)
