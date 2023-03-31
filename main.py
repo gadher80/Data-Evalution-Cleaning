@@ -207,10 +207,4 @@ for dbf_table_pth in files:
                 break
             break
 
-    # time.sleep(5)
-
-
-
-
-
 
