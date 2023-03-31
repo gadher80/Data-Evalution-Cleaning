@@ -14,7 +14,7 @@ from openpyxl import Workbook, load_workbook  # needed to work with excel files
 # you have to use your 'host', 'user_name', 'password', 'port' and database where you want to import files
 import mysql.connector
 
-mydb = mysql.connector.connect(host='127.0.0.1', user='root', passwd='MariaDB8813!', port=2306, db='mydatabase_hardik')
+mydb = mysql.connector.connect(host='127.0.0.1', user='root', passwd='XXX!', port=XXX, db='XXX')
 mycursor = mydb.cursor()
 
 # create 4 different tables for 4 different Säge
@@ -29,10 +29,10 @@ mycursor.execute(
 
 mydb.commit()
 # lets find a latest file from given path and work on it
-# files = glob.glob("D:\Fraunhofer CSP\How to\CSP-20210623T205859Z-001\CSP/**/protocol/*.DBF")
+# files = glob.glob("D:\XXX\How to\XXX\XX/**/XX/*.DBF")
 # for dbf_table_pth in files:
-files = glob.glob("D:\Fraunhofer CSP\How to\CSP-20210623T205859Z-001\CSP/**/protocol/*.DBF")
-profiles = glob.glob("D:\Fraunhofer CSP\How to\CSP-20210623T205859Z-001\CSP/**/profiles/*.DBF")
+files = glob.glob("D:\XX XXX\How to\CXXX\XXX/**/XXX/*.DBF")
+profiles = glob.glob("D:\XXX XXX\XXX to\XX-XX-XX\XX/**/XX/*.DBF")
 for dbf_table_pth in files:
     #dbf_table_pth = max(files, key=os.path.getctime)  # latest file
     basename = os.path.basename(dbf_table_pth)
